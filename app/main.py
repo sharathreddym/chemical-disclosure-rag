@@ -49,14 +49,19 @@ def print_result(result: dict, verbose: bool = False):
         print(f"  {result['sql_query']}")
 
     if verbose and result["evidence"]:
+        total = len(result["evidence"])
+        cli_cap = 20
         print(f"\n{'-' * 80}")
-        print(f"EVIDENCE ({len(result['evidence'])} records):")
-        for i, e in enumerate(result["evidence"][:10], 1):
+        print(f"EVIDENCE ({total} records" + (f"; showing first {cli_cap}" if total > cli_cap else "") + "):")
+        for i, e in enumerate(result["evidence"][:cli_cap], 1):
             print(f"  [{i}] CDPHId={e.get('CDPHId', 'N/A')}, "
+                  f"CSFId={e.get('CSFId', '')}, "
                   f"Product={e.get('ProductName', 'N/A')}, "
                   f"Chemical={e.get('ChemicalName', 'N/A')}, "
                   f"CAS={e.get('CasNumber', 'N/A')}, "
                   f"Company={e.get('CompanyName', 'N/A')}")
+        if total > cli_cap:
+            print(f"  ... and {total - cli_cap} more rows (use the Streamlit UI for the full table)")
 
     if verbose and result["query_plan"]:
         print(f"\n{'-' * 80}")

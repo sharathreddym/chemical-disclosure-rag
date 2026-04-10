@@ -4,6 +4,7 @@ import streamlit as st
 import json
 import os
 import sys
+import pandas as pd
 from pathlib import Path
 
 # Add parent directory to path for imports
@@ -154,17 +155,40 @@ def main():
                 with st.expander("🔍 SQL Query", expanded=False):
                     st.code(result["sql_query"], language="sql")
 
-            # Evidence
+            # Evidence - shown as a sortable, filterable dataframe
             if result["evidence"]:
-                with st.expander(f"📋 Evidence ({len(result['evidence'])} records)", expanded=False):
-                    for i, e in enumerate(result["evidence"][:15], 1):
-                        st.markdown(
-                            f"**[{i}]** CDPHId: `{e.get('CDPHId', 'N/A')}` | "
-                            f"Product: {e.get('ProductName', 'N/A')} | "
-                            f"Chemical: {e.get('ChemicalName', 'N/A')} | "
-                            f"CAS: {e.get('CasNumber', 'N/A')} | "
-                            f"Company: {e.get('CompanyName', 'N/A')}"
-                        )
+                with st.expander(f"📋 Evidence ({len(result['evidence'])} records)", expanded=True):
+                    df = pd.DataFrame(result["evidence"])
+
+                    # Preferred column order - most informative first
+                    preferred = [
+                        "CDPHId", "CSFId", "ChemicalId",
+                        "ProductName", "CompanyName", "BrandName",
+                        "ChemicalName", "CasNumber",
+                        "PrimaryCategory", "SubCategory",
+                        "InitialDateReported", "MostRecentDateReported",
+                        "DiscontinuedDate", "ChemicalCount",
+                        "ChemicalCreatedAt", "ChemicalUpdatedAt", "ChemicalDateRemoved",
+                        "source", "relevance_score",
+                    ]
+                    cols_in_df = [c for c in preferred if c in df.columns]
+                    other_cols = [c for c in df.columns if c not in preferred]
+                    df = df[cols_in_df + other_cols]
+
+                    st.caption(
+                        f"Showing all {len(df)} validated evidence rows. "
+                        f"Click any column header to sort. Use the search icon (top-right of the table) to filter."
+                    )
+                    st.dataframe(df, use_container_width=True, hide_index=False, height=400)
+
+                    # Optional CSV download
+                    csv = df.to_csv(index=False).encode("utf-8")
+                    st.download_button(
+                        label="Download evidence as CSV",
+                        data=csv,
+                        file_name="evidence.csv",
+                        mime="text/csv",
+                    )
 
             # Query Plan
             if result["query_plan"]:

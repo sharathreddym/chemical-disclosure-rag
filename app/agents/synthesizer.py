@@ -116,8 +116,10 @@ Return JSON with keys: "answer" (the structured response) and "followups" (2-3 s
             ))
             state.suggested_followups = []
 
-        # Build evidence list for output (full dicts, not trimmed strings)
-        state.evidence_list = [r.to_dict() for r in state.merged_evidence[:20]]
+        # Return ALL merged evidence (no cap) so the UI can show every row that
+        # supports the answer. The LLM prompt only sees the first 30 for context
+        # budget, but the UI/CLI gets the full set for transparency.
+        state.evidence_list = [r.to_dict() for r in state.merged_evidence]
 
         # Set confidence
         if state.evidence_strength == "strong" and not state.conflicts:
