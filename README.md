@@ -52,9 +52,9 @@ and a maker-checker retry loop on the validator.
 - **Anthropic Claude** (Sonnet 4) as the LLM, accessed through a hosted proxy
 - **Streamlit** for the optional web UI; **CLI** for the primary interface
 
-## Quick Start (for evaluators)
+## Quick Start (for users)
 
-The interviewer can run this with **zero signup and no API key**.
+The user can run this with **zero signup and no API key**.
 The LLM is accessed through a hosted proxy on Hugging Face Spaces; the proxy holds the
 Anthropic API key as a server-side secret, so you don't need one.
 
@@ -149,7 +149,7 @@ Use `-v` for verbose output, `--json` for machine-readable output.
 | **Only 3-4 agents are LLM-based** | Cost / latency control. SQL execution, vector search, and evidence merging are deterministic |
 | **Local ONNX embeddings** | Zero cost, zero API key, offline-capable, fast enough for ~8K entity index |
 | **Smart entity index in ChromaDB** | Indexes ~8.4K unique entities (chemicals, companies, brands, products, categories) instead of all 114K rows. Same recall, much faster ingestion |
-| **Hosted LLM proxy** | Lets evaluators run the system without an API key. Anthropic key lives as a HF Spaces secret |
+| **Hosted LLM proxy** | Lets users run the system without an API key. Anthropic key lives as a HF Spaces secret |
 | **Maker-checker validation** | Catches ungrounded claims before they reach the user. Bounded to 1 retry to avoid loops |
 | **Shared `PipelineState` dataclass** | Clean state passing between agents; full traceability for the query plan |
 
@@ -196,6 +196,3 @@ Then in the main project's `.env`:
 LLM_PROXY_URL=http://localhost:7860
 ```
 
-## License
-
-Built as an interview assessment for the AI Engineer role.

@@ -1,4 +1,4 @@
-"""LLM client - calls a hosted proxy so the interviewer needs no API key.
+"""LLM client - calls a hosted proxy so the user needs no API key.
 
 The proxy is deployed on Hugging Face Spaces and holds the Anthropic API key
 as a server-side secret. See `proxy/` for the proxy source code.

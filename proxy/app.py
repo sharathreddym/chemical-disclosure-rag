@@ -2,7 +2,7 @@
 LLM Proxy Server for Chemical Disclosure RAG.
 
 Forwards LLM requests to Anthropic Claude using a server-side API key.
-Deployed on Hugging Face Spaces so the interviewer never needs an API key.
+Deployed on Hugging Face Spaces so the user never needs an API key.
 
 Endpoints:
     POST /llm     - Send a prompt, get a Claude response

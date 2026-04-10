@@ -19,7 +19,7 @@ The main project is a multi-agent orchestrator over a cosmetics chemicals datase
 It uses Claude as the reasoning engine for several agents (planner, entity extractor,
 SQL generator, synthesizer, validator).
 
-To let evaluators run the system **without signing up anywhere or providing an API key**,
+To let users run the system **without signing up anywhere or providing an API key**,
 the Anthropic API key lives here as a Hugging Face Spaces secret. The client code
 calls this proxy instead of Anthropic directly.
 
